@@ -1,0 +1,21 @@
+This project is a simple expenses tracker that works as a web application which you can access through your browser.
+
+Currently the project is writen in Greek language but translations are coming.
+
+It is built using PHP and Javascript and requires a MySQL database and a Web server.
+It has been successfully tested on a LAMP environment.
+
+To install create a new user and a new DB in MySQL and import expenses.sql.
+Place all files from expenses folder in your web servers root.
+Open index.php with your favorite editor and change the DB connection settings.
+Now you are ready to go!
+
+To use the application just point your browser to where you have installed it.
+Usage is pretty self explanatory.
+
+TODO:
+
+English Translation
+User defined expense categories
+Perhaps a fancier interface
+Other translations if requested (and language files provided)
