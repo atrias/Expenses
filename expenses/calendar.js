@@ -1,7 +1,7 @@
 function show_calendar(str_target, str_datetime) {
-	var arr_months = ["Ιανουάριος", "Φεβρουάριος", "Μάρτιος", "Απρίλιος", "Μάιος", "Ιούνιος",
-		"Ιούλιος", "Αύγουστος", "Σεπτέμβριος", "Οκτώβριος", "Νοέμβριος", "Δεκέμβριος"];
-	var week_days = ["Κυ", "Δε", "Τρ", "Τε", "Πε", "Πα", "Σα"];
+	var arr_months = ["January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"];
+	var week_days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 	var n_weekstart = 1; // day week starts from (normally 0 or 1)
 
 

@@ -9,21 +9,21 @@ $mysql_base = "expenses";
 $edit_pass = "editpass"; // password to edit entries
 
 $purposes = array(
-        'home' => array('Για το Σπίτι',''),
-        'user1' => array('Για τον Χρήστη1',''),
-        'user2' => array('Για τον Χρήστη2',''),
-        'gift' => array('Δώρο για άλλον',''),
-        'other' => array('Άλλο','')
+        'home' => array('Home expenses',''),
+        'user1' => array('User1 expenses',''),
+        'user2' => array('User2 expenses',''),
+        'gift' => array('Gift for someone else',''),
+        'other' => array('Other','')
 );
 
 $weekdays = array(
-	'Mon' => 'Δευ',
-	'Tue' => 'Τρι',
-	'Wed' => 'Τετ',
-	'Thu' => 'Πεμ',
-	'Fri' => 'Παρ',
-	'Sat' => 'Σάβ',
-	'Sun' => 'Κυρ'
+	'Mon' => 'Mon',
+	'Tue' => 'Tue',
+	'Wed' => 'Wed',
+	'Thu' => 'Thu',
+	'Fri' => 'Fri',
+	'Sat' => 'Sat',
+	'Sun' => 'Sun'
 );
 
 $db = @mysql_connect($mysql_host, $mysql_user, $mysql_pass)  or  die( "Unable  to  connect to  SQL  server");
@@ -41,7 +41,7 @@ if (isset($_POST["add_expence"]))
 			time = ".mktime(12, 0, 0, $m, $d, $y).", 
 			purpose = '".mysql_real_escape_string($_POST["purpose"])."'";
 		$result = mysql_query($sql);
-		if ($result) $okmsg = '<font color="green" size="+2">Επιτυχής Καταχώρηση</font>';	
+		if ($result) $okmsg = '<font color="green" size="+2">New entry added successfully</font>';	
 	}
 }
 elseif (isset($_POST["edit_expence"]) and $_POST["pswd"] == $edit_pass)
@@ -55,12 +55,12 @@ elseif (isset($_POST["edit_expence"]) and $_POST["pswd"] == $edit_pass)
 			purpose = '".mysql_real_escape_string($_POST["purpose"])."'
 			WHERE id = ".intval($_POST["edit_expence"]);
 		$result = mysql_query($sql);
-		if ($result) $okmsg = '<font color="blue" size="+2">Επιτυχής Διόρθωση</font>';
+		if ($result) $okmsg = '<font color="blue" size="+2">Update was successful</font>';
 	}
 	elseif (isset($_POST["delete"])) {
 		$sql = "DELETE FROM `expenses` WHERE id = ".intval($_POST["edit_expence"]);
 		$result = mysql_query($sql);
-		if ($result) $okmsg = '<font color="red" size="+2">Επιτυχής Διαγραφή</font>';		
+		if ($result) $okmsg = '<font color="red" size="+2">Deletion was successful</font>';		
 	}
 }
 
@@ -109,12 +109,12 @@ if (isset($_POST["search_expence"]))
 	}
 	
 	$sql = "SELECT * FROM `expenses` ".$sqlwhere." ORDER BY id DESC";
-	$search_type = 'Αναζήτηση βάση κριτηρίων';
+	$search_type = 'Search by criteria';
 }
 else
 {
 	$sql = "SELECT * FROM `expenses` WHERE `time` >= ".(time()-604800)." ORDER BY id DESC LIMIT 50";
-	$search_type = 'Τελευταίες 7 μέρες';
+	$search_type = 'Last 7 days';
 }
 ?>
 
@@ -134,47 +134,47 @@ else
 		<form action="" method="post" name="addexp">
 		<input type=hidden name="add_expence">
 		<table style="border-style:solid;" width="290">
-			<tr><th colspan="2">Εισαγωγή</th>
-			<tr><td align="right">Περιγραφή</td><td><input type="text" name="descr"></td></tr>
-			<tr><td align="right">Ποσό</td><td><input type="text" name="amount" size="7"></td></tr>
-			<tr><td align="right">Ημερομηνία</td><td><input type="text" name="time" size="11" value="<?= date("j/n/Y", time()); ?>" onClick="show_calendar('document.addexp.time',document.addexp.time.value);"></td></tr>
+			<tr><th colspan="2">New Entry</th>
+			<tr><td align="right">Description</td><td><input type="text" name="descr"></td></tr>
+			<tr><td align="right">Amount</td><td><input type="text" name="amount" size="7"></td></tr>
+			<tr><td align="right">Date</td><td><input type="text" name="time" size="11" value="<?= date("j/n/Y", time()); ?>" onClick="show_calendar('document.addexp.time',document.addexp.time.value);"></td></tr>
 			<tr>
-				<td align="right">Σκοπός</td>
+				<td align="right">Purpose</td>
 				<td>
 					<select name="purpose">
-						<option value="home">Για το Σπίτι</option>
-						<option value="user1">Για τον Χρήστη1</option>
-						<option value="user2">Για τον Χρήστη2</option>
-						<option value="gift">Δώρο για άλλον</option>
-						<option value="other">Άλλο</option>
+						<option value="home">Home expenses</option>
+						<option value="user1">User1 expenses</option>
+						<option value="user2">User2 expenses</option>
+						<option value="gift">Gift for someone else</option>
+						<option value="other">Other</option>
 					</select>
 				</td>
 			</tr>
-			<tr><td colspan="2" align="center"><input type="submit" value="Καταχώρηση"></td></tr>
+			<tr><td colspan="2" align="center"><input type="submit" value="Submit"></td></tr>
 		</table>
 		</form>
 
 		<form action="" method="post" name="searchexp">
 		<input type=hidden name="search_expence">
 		<table style="border-style:solid;" width="290">
-			<tr><th colspan="2">Αναζήτηση</th>
-			<tr><td align="right">Περιγραφή</td><td><input type="text" name="searchdescr" value="<?= $_POST["searchdescr"]; ?>"></td></tr>
-			<tr><td align="right">Ελάχιστο Ποσό</td><td><input type="text" name="minamount" value="<?= $_POST["minamount"]; ?>" size="7"></td></tr>
-			<tr><td align="right">Μέγιστο Ποσό</td><td><input type="text" name="maxamount" value="<?= $_POST["maxamount"]; ?>" size="7"></td></tr>
-			<tr><td align="right">Από Ημερομηνία</td><td><input type="text" name="fromtime" size="11" value="<?= $fromtime; ?>" onClick="show_calendar('document.searchexp.fromtime',document.searchexp.fromtime.value);"></td></tr>
-			<tr><td align="right">Έως Ημερομηνία</td><td><input type="text" name="totime" size="11" value="<?= $totime; ?>" onClick="show_calendar('document.searchexp.totime',document.searchexp.totime.value);"></td></tr>
+			<tr><th colspan="2">Search</th>
+			<tr><td align="right">Description</td><td><input type="text" name="searchdescr" value="<?= $_POST["searchdescr"]; ?>"></td></tr>
+			<tr><td align="right">Min Amount</td><td><input type="text" name="minamount" value="<?= $_POST["minamount"]; ?>" size="7"></td></tr>
+			<tr><td align="right">Max Amount</td><td><input type="text" name="maxamount" value="<?= $_POST["maxamount"]; ?>" size="7"></td></tr>
+			<tr><td align="right">From Date</td><td><input type="text" name="fromtime" size="11" value="<?= $fromtime; ?>" onClick="show_calendar('document.searchexp.fromtime',document.searchexp.fromtime.value);"></td></tr>
+			<tr><td align="right">To Date</td><td><input type="text" name="totime" size="11" value="<?= $totime; ?>" onClick="show_calendar('document.searchexp.totime',document.searchexp.totime.value);"></td></tr>
 			<tr>
-				<td align="right">Σκοπός</td>
+				<td align="right">Purpose</td>
 				<td>
-					<input type="checkbox" name="searchpurpose[]" <?= $purposes['home'][1]; ?> value="home">Για το Σπίτι<br>
-					<input type="checkbox" name="searchpurpose[]" <?= $purposes['user1'][1]; ?> value="user1">Για τον Χρήστη1<br>
-					<input type="checkbox" name="searchpurpose[]" <?= $purposes['user2'][1]; ?> value="user2">Για τον Χρήστη2<br>
-					<input type="checkbox" name="searchpurpose[]" <?= $purposes['gift'][1]; ?> value="gift">Δώρο για άλλον<br>
-					<input type="checkbox" name="searchpurpose[]" <?= $purposes['other'][1]; ?> value="other">Άλλο
+					<input type="checkbox" name="searchpurpose[]" <?= $purposes['home'][1]; ?> value="home">Home expenses<br>
+					<input type="checkbox" name="searchpurpose[]" <?= $purposes['user1'][1]; ?> value="user1">User1 expenses<br>
+					<input type="checkbox" name="searchpurpose[]" <?= $purposes['user2'][1]; ?> value="user2">User2 expenses<br>
+					<input type="checkbox" name="searchpurpose[]" <?= $purposes['gift'][1]; ?> value="gift">Gift for someone else<br>
+					<input type="checkbox" name="searchpurpose[]" <?= $purposes['other'][1]; ?> value="other">Other
 				</td>
 			</tr>
-			<tr><td colspan="2" align="center"><input type="submit" value="Αναζήτηση"></td></tr>
-			<tr><td colspan="2" align="center"><input type="reset" value="Επαναφορά" onClick="window.location = window.location.href;"></td></tr>
+			<tr><td colspan="2" align="center"><input type="submit" value="Search"></td></tr>
+			<tr><td colspan="2" align="center"><input type="reset" value="Reset" onClick="window.location = window.location.href;"></td></tr>
 		</table>
 		</form>
 	</div>
@@ -184,25 +184,25 @@ else
 			<form id="editform" action="" method="post" name="editexp">
 			<input type=hidden name="edit_expence">
 			<table style="border-style:solid;">
-				<tr><th colspan="2">Διόρθωση (<span id="editidshow"></span>)</th>
-				<tr><td align="right">Περιγραφή</td><td><input type="text" name="descr"></td></tr>
-				<tr><td align="right">Ποσό</td><td><input type="text" name="amount" size="7"></td></tr>
-				<tr><td align="right">Ημερομηνία</td><td><input type="text" name="time" size="11" onClick="show_calendar('document.editexp.time',document.editexp.time.value);"></td></tr>
+				<tr><th colspan="2">Edit (<span id="editidshow"></span>)</th>
+				<tr><td align="right">Description</td><td><input type="text" name="descr"></td></tr>
+				<tr><td align="right">Amount</td><td><input type="text" name="amount" size="7"></td></tr>
+				<tr><td align="right">Date</td><td><input type="text" name="time" size="11" onClick="show_calendar('document.editexp.time',document.editexp.time.value);"></td></tr>
 				<tr>
-					<td align="right">Σκοπός</td>
+					<td align="right">Purpose</td>
 					<td>
 						<select name="purpose">
-							<option value="home">Για το Σπίτι</option>
-							<option value="user1">Για τον Χρήστη1</option>
-							<option value="user2">Για τον Χρήστη2</option>
-							<option value="gift">Δώρο για άλλον</option>
-							<option value="other">Άλλο</option>
+							<option value="home">Home expenses</option>
+							<option value="user1">User1 expenses</option>
+							<option value="user2">User2 expenses</option>
+							<option value="gift">Gift for someone else</option>
+							<option value="other">Other</option>
 						</select>
 					</td>
 				</tr>
-				<tr><td align="right">Κωδικός</td><td><input type="password" name="pswd"></td></tr>
-				<tr><td align="center" colspan="2"><input type="submit" name="edit" value="Διόρθωση" onClick="return confirm('Να γίνει διόρθωση?');"><input type="submit" name="delete" value="Διαγραφή" onClick="return confirm('Να γίνει διαγραφή?');"></td></tr>
-				<tr><td colspan="2" align="center"><input type="button" value="Ακύρωση Διόρθωσης" onClick="hideeditform(document.forms['editform'].elements['edit_expence'].value);"></td></tr>		
+				<tr><td align="right">Password</td><td><input type="password" name="pswd"></td></tr>
+				<tr><td align="center" colspan="2"><input type="submit" name="edit" value="Edit" onClick="return confirm('Proceed with edit?');"><input type="submit" name="delete" value="Delete" onClick="return confirm('Proceed with deletion?');"></td></tr>
+				<tr><td colspan="2" align="center"><input type="button" value="Cancel" onClick="hideeditform(document.forms['editform'].elements['edit_expence'].value);"></td></tr>		
 			</table>
 			<? if (isset($_POST["search_expence"]))	{ ?>
 				<input type=hidden name="search_expence">
@@ -224,10 +224,10 @@ else
 			<tr><th colspan="5"><font color="blue" size="+2" id="totalamount">???</font></th></tr>	
 			<tr>
 				<th>id</th>
-				<th>Περιγραφή</th>
-				<th>Ποσό</th>
-				<th>Ημερομηνία</th>
-					<th>Σκοπός</th>
+				<th>Description</th>
+				<th>Amount</th>
+				<th>Date</th>
+				<th>Purpose</th>
 			</tr>
 			<?
 			$total = 0;
@@ -259,7 +259,7 @@ else
 </html>
 
 <script type="text/javascript">
-	document.getElementById('totalamount').innerHTML = 'Σύνολο για τα παρακάτω <?= sprintf("%.2f", $total); ?> €';
+	document.getElementById('totalamount').innerHTML = 'Total for displayed entries <?= sprintf("%.2f", $total); ?> €';
 	var last_edit_id = <?= $last_edit_id; ?>; 
 
 	function showeditform(id,descr,amount,time,purpose) {
