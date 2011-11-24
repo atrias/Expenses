@@ -1,6 +1,7 @@
 This project is a simple expenses tracker that works as a web application which you can access through your browser.
 
-Currently the project is writen in Greek language but translations are coming.
+The project is writen in English and Greek languages (as seperate branches) but translations are coming.
+You can find the greek version in the branch named 'greek'.
 
 It is built using PHP and Javascript and requires a MySQL database and a Web server.
 It has been successfully tested on a LAMP environment.
