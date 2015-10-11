@@ -120,14 +120,14 @@ else
 
 <html>
 <head>
-	<title>ΕΞΟΔΑ</title>
+	<title>Expenses</title>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" /> 
 	<LINK REL="SHORTCUT ICON" HREF="favicon.ico">
 	<script language="JavaScript" src="calendar.js"></script>
 </head>
 <body>
 
-<h1>ΕΞΟΔΑ</h1>
+<h1>Expenses</h1>
 <div style="width: 100%; position: relative;">
 
 	<div style="float: left; padding-right:10px;">
